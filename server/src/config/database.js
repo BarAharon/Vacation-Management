@@ -1,6 +1,8 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
 import dotenv from "dotenv";
+import { User } from "../entities/User.js";
+import { VacationRequest } from "../entities/VacationRequest.js";
 
 dotenv.config();
 
@@ -13,5 +15,5 @@ export const AppDataSource = new DataSource({
   database: process.env.DB_NAME || "vacation_management",
   synchronize: true,
   logging: false,
-  entities: [new URL("../entities/*.js", import.meta.url).pathname],
+  entities: [User, VacationRequest],
 });
