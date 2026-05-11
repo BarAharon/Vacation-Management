@@ -3,6 +3,9 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { AppDataSource } from "./config/database.js";
+import userRoutes from "./routes/userRoutes.js";
+import vacationRequestRoutes from "./routes/vacationRequestRoutes.js";
+import { errorHandler } from "./middleware/errorHandler.js";
 
 dotenv.config();
 
@@ -12,14 +15,12 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-// Health check
-app.get("/health", (_req, res) => {
-  res.json({ status: "ok" });
-});
+app.get("/health", (_req, res) => res.json({ status: "ok" }));
 
-// TODO: mount routers here as you build them
-// e.g. import requestRouter from "./routes/requests.js";
-//      app.use("/api/requests", requestRouter);
+app.use("/api/users", userRoutes);
+app.use("/api/requests", vacationRequestRoutes);
+
+app.use(errorHandler);
 
 AppDataSource.initialize()
   .then(() => {
